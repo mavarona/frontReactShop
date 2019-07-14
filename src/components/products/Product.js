@@ -55,7 +55,7 @@ const Product = ({product}) => {
                             onClick={() => deleteProduct(_id)}
                             >
                         <i className="fas fa-times"></i>
-                        Eliminar Cliente
+                        Eliminar Producto
                     </button>
                 </div>
             </li>

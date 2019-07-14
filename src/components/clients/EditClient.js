@@ -108,10 +108,10 @@ const EditClient = (props) => {
                 </div>
 
                 <div className="enviar">
-                        <input type="submit" 
-                               className="btn btn-azul" 
-                               value="Guardar Cambios" 
-                               disabled={validateClient()} />
+                    <input type="submit" 
+                            className="btn btn-azul" 
+                            value="Guardar Cambios" 
+                            disabled={validateClient()} />
                 </div>
 
             </form>
