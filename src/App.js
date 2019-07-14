@@ -17,6 +17,7 @@ import NewProduct from './components/products/NewProduct';
 import EditProduct from './components/products/EditProduct';
 
 import Orders from './components/orders/Orders';
+import NewOrder from './components/orders/NewOrder';
 
 function App() {
     return ( 
@@ -36,6 +37,7 @@ function App() {
                             <Route exact path="/products/edit/:id" component={EditProduct} />
 
                             <Route exact path="/orders" component={Orders} />
+                            <Route exact path="/orders/new/:id" component={NewOrder} />
                         </Switch>
                     </main>
                 </div>

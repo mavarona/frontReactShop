@@ -16,12 +16,13 @@ const EditClient = (props) => {
         phone: ''
     });
 
-    const queryApi = async () => {
-        const clientDB = await clientAxios.get(`/clients/${id}`);
-        dataClient(clientDB.data);
-    }
-
     useEffect( () => {
+
+        const queryApi = async () => {
+            const clientDB = await clientAxios.get(`/clients/${id}`);
+            dataClient(clientDB.data);
+        }
+
         queryApi();
     }, []);
 

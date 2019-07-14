@@ -17,12 +17,13 @@ const EditProduct = (props) => {
 
     const [imgProduct, dataImgProduct] = useState('');
      
-    const fetchProduct = async () => {
-        const productDB = await clientAxios.get(`/products/${id}`);
-        dataProduct(productDB.data);
-    };
-
     useEffect( () => {
+
+        const fetchProduct = async () => {
+            const productDB = await clientAxios.get(`/products/${id}`);
+            dataProduct(productDB.data);
+        };
+
         fetchProduct();
     }, []);
 
@@ -102,7 +103,7 @@ const EditProduct = (props) => {
                 <div className="campo">
                     <label>Imagen:</label>
                     { product.img ?(
-                        <img src={`http://localhost:5001/${product.img}`} width="300" />
+                        <img src={`http://localhost:5001/${product.img}`} alt={product.name} width="300" />
                     ): null }
                     <input type="file"  
                         name="img"
@@ -120,4 +121,4 @@ const EditProduct = (props) => {
     )
 }
 
-export default EditProduct;
+export default withRouter(EditProduct);

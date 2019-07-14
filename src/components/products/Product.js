@@ -43,7 +43,7 @@ const Product = ({product}) => {
                 <div className="info-producto">
                     <p className="nombre">{name}</p>
                     <p className="precio">{price} €</p>
-                    { img ? (<img src={`http://localhost:5001/${img}`} />) : null }
+                    { img ? (<img src={`http://localhost:5001/${img}`} alt={name} />) : null }
                 </div>
                 <div className="acciones">
                     <Link  to={`/products/edit/${_id}`} className="btn btn-azul">
