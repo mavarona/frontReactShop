@@ -1,23 +1,40 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Product from './Product'
 import Spinner from '../layout/Spinner';
 
 import clientAxios from '../../config/axios';
 
-const Products = () => {
+import { CRMContext } from '../../context/CRMContext';
+
+const Products = (props) => {
 
 
     const [products, saveProducts] = useState([]);
 
-    const fetchProducts = async () => {
-        const productsDB = await clientAxios.get('/products');
-        saveProducts(productsDB.data);
-    } 
+    const [auth, saveAuth] = useContext(CRMContext);
 
     useEffect( () => {
-        fetchProducts();
+        if(auth.token !== ''){
+            const fetchProducts = async () => {
+                try{
+                    const productsDB = await clientAxios.get('/products',{
+                        headers:{
+                            Authorization: `Bearer ${auth.token}`
+                        }
+                    });
+                    saveProducts(productsDB.data);
+                } catch (err){
+                    if(err.response.status === 500){
+                        props.history.push('/login');
+                    }
+                }
+            } 
+            fetchProducts();
+        }else{
+            props.history.push('/login');
+        }
     }, [products]);
 
     if(!products) return <Spinner />;
@@ -39,4 +56,4 @@ const Products = () => {
     )
 }
 
-export default Products;
+export default withRouter(Products);

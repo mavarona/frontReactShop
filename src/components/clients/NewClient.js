@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom';
 import clientAxios from '../../config/axios';
 
+import { CRMContext } from '../../context/CRMContext';
 
 const NewClient = ({history}) => {
 
@@ -13,6 +14,8 @@ const NewClient = ({history}) => {
         email: '',
         phone: ''
     });
+
+    const [auth, saveAuth] = useContext(CRMContext);
 
     const updateState = e =>{
         saveClient({
@@ -45,6 +48,10 @@ const NewClient = ({history}) => {
                         }
                     });
 
+    }
+
+    if(!auth.auth){
+        history.push('/login');
     }
 
     return(

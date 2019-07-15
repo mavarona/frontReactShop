@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom';
 import clientAxios from '../../config/axios';
 
+import { CRMContext } from '../../context/CRMContext';
+
 const Login = (props) => {
+
+    const [auth, saveAuth] = useContext(CRMContext);
 
     const [credentials, saveCredentials] = useState({
         email: '',
@@ -24,6 +28,10 @@ const Login = (props) => {
             const res = await clientAxios.post('/login', credentials);
             const { token } = res.data;
             localStorage.setItem('token', token);
+            saveAuth({
+                token,
+                auth: true
+            });
             props.history.push('/');
         } catch(err){
             console.log(err);

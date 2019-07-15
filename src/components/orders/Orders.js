@@ -1,21 +1,38 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import clientAxios from '../../config/axios';
 
 import DetailsOrder from './DetailsOrder';
 
-const Orders = () => {
+import { CRMContext } from '../../context/CRMContext';
+
+import { withRouter } from 'react-router-dom';
+
+const Orders = (props) => {
 
     const [orders, saveOrders] = useState([]);
 
+    const [auth, saveAuth] = useContext(CRMContext);
+
     useEffect( () => {
-
-        const fetchOrders = async () => {
-            const ordersDB = await clientAxios.get('/orders');
-            saveOrders(ordersDB.data);
+        if(auth.token !== ''){
+            const fetchOrders = async () => {
+                try{
+                    const ordersDB = await clientAxios.get('/orders',{
+                        headers:{
+                            Authorization: `Bearer ${auth.token}`
+                        }
+                    });
+                    saveOrders(ordersDB.data);
+                } catch (err){
+                    if(err.response.status === 500){
+                        props.history.push('/login');
+                    }
+                }
+            }
+            fetchOrders();
+        }else{
+            props.history.push('/login');
         }
-
-        fetchOrders();
-
     }, []);
 
     return ( 
@@ -35,4 +52,4 @@ const Orders = () => {
     )
 }
 
-export default Orders;
+export default withRouter(Orders);

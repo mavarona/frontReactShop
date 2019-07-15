@@ -1,26 +1,46 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Client from './Client';
 import Spinner from '../layout/Spinner';
 
 import clientAxios from '../../config/axios';
 
-const Clients = () => {
+import { CRMContext } from '../../context/CRMContext';
+
+const Clients = (props) => {
 
     const [clients, saveClients] = useState([]);
 
-    const queryAllClients = async () => {
-        const results = await clientAxios.get('/clients');
-        saveClients(results.data);
-    }
+    const [auth, saveAuth] = useContext(CRMContext);
 
     useEffect( () => {
-        queryAllClients();
+        if(auth.token !== ''){
+            const queryAllClients = async () => {
+                try{
+                    const results = await clientAxios.get('/clients',{
+                        headers:{
+                            Authorization: `Bearer ${auth.token}`
+                        }
+                    });
+                    saveClients(results.data);
+                } catch (err){
+                    if(err.response.status === 500){
+                        props.history.push('/login');
+                    }
+                }
+            }
+            queryAllClients();
+        }else{
+            props.history.push('/login');
+        }
+
     }, [clients] );
 
-    if(!clients) return <Spinner />;
+    if(!auth.auth) props.history.push('/login');
+
+    if(!clients.length) return <Spinner />;
 
     return ( 
         <Fragment>
@@ -40,4 +60,4 @@ const Clients = () => {
     )
 }
 
-export default Clients;
+export default withRouter(Clients);

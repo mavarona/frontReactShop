@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Fragment} from 'react';
+import React, { useState, useEffect, useContext ,Fragment} from 'react';
 import clientAxios from '../../config/axios';
 import Swal from 'sweetalert2';
 
 import SearchProduct from './SearchProduct';
 import FormQuantityProduct from './FormQuantityProduct';
 import { withRouter } from 'react-router-dom';
+
+import { CRMContext } from '../../context/CRMContext';
 
 const NewOrder = (props) => {
 
@@ -14,6 +16,8 @@ const NewOrder = (props) => {
     const [search, saveSearch] = useState('');
     const [products, saveProducts] = useState([]);
     const [total, saveTotal] = useState(0);
+
+    const [auth, saveAuth] = useContext(CRMContext);
 
     useEffect( () => {
 
@@ -102,6 +106,10 @@ const NewOrder = (props) => {
 
         props.history.push('/');
 
+    }
+
+    if(!auth.auth){
+        props.history.push('/login');
     }
 
     return ( 

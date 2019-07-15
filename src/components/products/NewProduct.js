@@ -1,14 +1,18 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useContext } from 'react';
 
 import Swal from 'sweetalert2';
 import clientAxios from '../../config/axios';
 
-const NewProduct = () => {
+import { CRMContext } from '../../context/CRMContext';
+
+const NewProduct = (props) => {
 
     const [product, saveProduct] = useState({
         name: '',
         price: ''
     });
+
+    const [auth, saveAuth] = useContext(CRMContext);
 
     const [imgProduct, saveImgProduct] = useState('');
 
@@ -55,6 +59,10 @@ const NewProduct = () => {
             });
         }
 
+    }
+
+    if(!auth.auth){
+        props.history.push('/login');
     }
 
     return ( 
